@@ -1,10 +1,24 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import axios from "axios";
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const [role, setRole] = useState("donar");
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/auth/login",
+        data
+      );
+
+      alert(response.data.message);
+      if (response?.data?.token) {
+        localStorage.setItem("token", response.data.token);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

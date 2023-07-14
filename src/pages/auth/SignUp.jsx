@@ -1,11 +1,24 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+
 const SignUp = () => {
   const [role, setRole] = useState("donar");
   console.log(role);
 
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/auth/register",
+        data
+      );
+      console.log("ssssss", response);
+      alert(response.data.message);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       <h1 className="mb-4 font-bold ">Welcome to Sign-up😊</h1>
@@ -38,6 +51,7 @@ const SignUp = () => {
               value={"admin"}
               onChange={(e) => setRole(e.target.value)}
               className="ml-2"
+              {...register("role")}
             />
             <label
               htmlFor="adminRadio"
